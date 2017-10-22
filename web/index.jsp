@@ -37,7 +37,7 @@
         <tr>
             <td align="center" id="menu1">
                 <h1 style="color: #2aa5a0">Радиус </h1>
-                <input onmousemove="swap()" onchange="swap()" name="zoom" id="myRange" type="range" min="10" max="20"
+                <input onmousemove="swap()" onchange="swap()" name="inputTextZoom" id="myRange" type="range" min="10" max="20"
                        step="1">
                 <br><br><br>
                 <input onchange="swap2()" onkeydown="if(event.keyCode===13){return false;}" type="text" id="myRange2"

@@ -56,14 +56,6 @@
             <scope>provided</scope>
         </dependency>
 
-        <!--<dependency>-->
-        <!--<groupId>org.glassfish.main.featuresets</groupId>-->
-        <!--<artifactId>glassfish</artifactId>-->
-        <!--<version>4.1.1</version>-->
-        <!--<type>pom</type>-->
-        <!--<scope>provided</scope>-->
-        <!--</dependency>-->
-
         <dependency>
             <groupId>org.jboss.logging</groupId>
             <artifactId>jboss-logging</artifactId>
