@@ -1,5 +1,8 @@
 package logic;
 
+import bean.PointBean;
+import entity.Point;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
@@ -156,14 +159,14 @@ public class CheckBatman {
         return false;
     }
 
-    public DataSessionBean updateRequest(HttpServletRequest request) {
-        DataSessionBean dataSessionBean = new DataSessionBean();
-        dataSessionBean.setX(getX / 7);
-        dataSessionBean.setY(getY / 7);
-        dataSessionBean.setZoom(getZoom);
-        dataSessionBean.setInBatman(check());
-        dataSessionBean.setCurrentTime(new Date());
-        dataSessionBean.setProcessTime(System.nanoTime() - start);
-        return dataSessionBean;
+    public Point updateRequest() {
+        Point point = new Point();
+        point.setX(getX / 7);
+        point.setY(getY / 7);
+        point.setZoom(getZoom);
+        point.setInBatman(check());
+        point.setCurrentTime(new Date());
+        point.setProcessTime(System.nanoTime() - start);
+        return point;
     }
 }

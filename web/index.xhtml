@@ -41,6 +41,10 @@
         <p:column headerText="ProgramLiveTime">
             <h:outputText value="#{point.processTime}"/>
         </p:column>
+
+        <script type="text/javascript">
+            console.log("#{point.x}");
+        </script>
     </p:dataTable>
 </h:body>
 </html>

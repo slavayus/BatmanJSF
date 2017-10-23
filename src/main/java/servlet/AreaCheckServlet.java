@@ -1,7 +1,10 @@
 package servlet;
 
+import entity.Point;
+import hibernate.HibernateUtil;
 import logic.CheckBatman;
-import logic.DataSessionBean;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -9,6 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class AreaCheckServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -32,26 +38,26 @@ public class AreaCheckServlet extends HttpServlet {
         if (checkBatman == null) {
             request.getRequestDispatcher("/index.xhtml").forward(request, response);
         } else {
-            updateDataSession(checkBatman, request);
+            updateDataSession(checkBatman);
             response.sendRedirect("ControllerServlet");
 //            request.getRequestDispatcher("/index.xhtml").forward(request, response);
         }
 
     }
 
-    private void updateDataSession(CheckBatman checkBatman, HttpServletRequest request) throws ServletException, IOException {
-        if (request.getSession().getAttribute("data") == null) {
-            ArrayList<DataSessionBean> dataList = new ArrayList<>();
-            dataList.add(checkBatman.updateRequest(request));
-            request.getSession().setAttribute("data", dataList);
-        } else {
-            ArrayList<DataSessionBean> dataList;
-            try {
-                dataList = (ArrayList<DataSessionBean>) request.getSession().getAttribute("data");
-                dataList.add(checkBatman.updateRequest(request));
-            } catch (Exception e) {
-                //Ops..
-            }
+    private void updateDataSession(CheckBatman checkBatman) throws ServletException, IOException {
+        Point point = checkBatman.updateRequest();
+
+        Locale.setDefault(Locale.ENGLISH);
+        try (Session session = HibernateUtil.getSession()) {
+            session.beginTransaction();
+
+            session.save(point);
+
+            session.getTransaction().commit();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw ex;
         }
     }
 

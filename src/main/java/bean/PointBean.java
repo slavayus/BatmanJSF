@@ -17,8 +17,6 @@ import java.util.Locale;
 @ManagedBean(name = "point")
 @SessionScoped
 public class PointBean {
-
-    @Where(clause = "zoom=2")
     private List<Point> points = new ArrayList<>();
     private double inputTextZoom = 2;
 
