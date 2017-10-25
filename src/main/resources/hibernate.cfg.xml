@@ -7,7 +7,7 @@
         <property name="hibernate.connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
         <property name="hibernate.connection.url">jdbc:oracle:thin:@localhost:1521:XE</property>
         <property name="hibernate.connection.username">batman</property>
-        <property name="hibernate.connection.password">oneone</property>
+        <property name="hibernate.connection.password">qwerty</property>
         <property name="hibernate.default_schema">BATMAN</property>
         <property name="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</property>
         <property name="hbm2ddl.auto">update</property>

@@ -14,7 +14,7 @@ public class ZoomValidator implements Validator{
         FacesMessage facesMessage;
         double zoomCoordinate = Double.parseDouble(value.toString());
         if (zoomCoordinate <= 10 || zoomCoordinate >= 20) {
-            facesMessage = new FacesMessage("Зуум введен неверно");
+            facesMessage = new FacesMessage("Радиус введен неверно");
             facesMessage.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(facesMessage);
         }
