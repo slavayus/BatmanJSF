@@ -1,50 +1,158 @@
-<html xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
 
 <h:head>
-    <meta charset="UTF-8"/>
+
+    <script type="text/javascript" src="resources/script/script.js">
+    </script>
     <title>Batman</title>
+    <link rel="stylesheet" type="text/css" href="resources/style/style.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"/>
 </h:head>
 <h:body>
-    <h:form>
-        <h:outputLabel>Name:</h:outputLabel>
-        <h:inputText id="zoom" value="#{point.inputTextZoom}">
-            <f:converter converterId="converters.DataInputConverter"/>
-            <f:validator validatorId="validators.CoordinateValidation.java"/>
-        </h:inputText>
-        <h:outputLabel value="#{point.inputTextZoom}"/>
-    </h:form>
-    <p><h:message for="zoom"/></p>
+    <div id="body">
+        <div id="header">
+            <div id="headerFirstRow" class="top-header">
+                <div id="headFirstContainer" class="container">
+                    <div id="logo">
+                        <h:graphicImage library="img" id="logoimg" name="logobatman.png"/>
+                    </div>
+                    <div id="info" >
+                        <p class="text" id="variant">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Вариант 13 P3211&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Юсюмбели В.И.
+                            Плохотнюк В.С.</p>
+                        <!--<p class="text" id="group">P3211 </p>-->
+                        <!--<p class="text" id="name">Юсюмбели В.И.-->
+                        <!--Плохотнюк В.С.</p>-->
+                    </div>
+                </div>
+            </div>
+            <div id="headerSecondRow">
+                <div id="headSecondContainer" class="container">
+                    <div id="clock"/>
+                </div>
+            </div>
+        </div>
+        <div id="mainContainer" class="clearfix">
+            <div id="menuContainer">
+                <div class="menu-option" id="first-option" align="center">
+                    <div style="padding-top: 25px;">
+                        <p:growl autoUpdate="true"/>
+                        <h3 style="margin-top:0">Radius</h3>
+                        <div class="knob-container ui-corner-all">
+                            <h:form>
+                                <p:growl id="growl" showDetail="true"/>
+                                <h:panelGrid columns="1" style="margin-bottom: 10px">
 
-    <p:dataTable var="point" value="#{point.points}">
-        <p:column headerText="X">
-            <h:outputText value="#{point.x}"/>
-        </p:column>
+                                    <p:slider for="myRange2" minValue="10" maxValue="20" onSlide="swap()"
+                                              onSlideEnd="">
+                                        <p:ajax event="slideEnd" listener="#{dataView.onSlideEnd}" update="growl"
+                                                onsuccess="updateHiddenZoom()"/>
+                                    </p:slider>
+                                    <br/>
+                                    <p:inputText style="align-items: center;" disabled="true" id="myRange2"
+                                                 value="#{dataView.zoom}"/>
 
-        <p:column headerText="Y">
-            <h:outputText value="#{point.y}"/>
-        </p:column>
+                                </h:panelGrid>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-option" id="second-option" align="center">
+                    <div style="padding-top: 0;">
 
-        <p:column headerText="Zoom">
-            <h:outputText value="#{point.zoom}"/>
-        </p:column>
+                        <h:panelGrid columns="2" style="padding-top: 20px; text-align:center" cellspacing="20">
+                            <h:outputText value="Введите X"/>
+                            <h:outputText value="Введите Y"/>
 
-        <p:column headerText="Strike">
-            <h:outputText value="#{point.inBatman}"/>
-        </p:column>
+                            <p:knob min="-21" max="21" step="1" width="100" height="100" foregroundColor="#ff5c5a"
+                                    backgroundColor="rgb(237,237,237)" id="coordX" value="#{dataView.coordX}">
+                                <p:ajax listener="#{dataView.onChangeX}" onsuccess="updateHiddenX()"/>
+                            </p:knob>
+                            <p:knob min="-21" max="21" step="1" width="100" height="100" foregroundColor="#ff5c5a"
+                                    backgroundColor="rgb(237,237,237)" id="coordY" value="#{dataView.coordY}">
+                                <p:ajax listener="#{dataView.onChangeY}" onsuccess="updateHiddenY()"/>
+                            </p:knob>
 
-        <p:column headerText="Time">
-            <h:outputText value="#{point.currentTime}"/>
-        </p:column>
+                        </h:panelGrid>
 
-        <p:column headerText="ProgramLiveTime">
-            <h:outputText value="#{point.processTime}"/>
-        </p:column>
+                        <h:form id="formID">
 
-        <script type="text/javascript">
-            console.log("#{point.x}");
-        </script>
-    </p:dataTable>
+                            <h:inputHidden id="hiddenCoordX" value="#{dataView.coordX}"/>
+                            <h:inputHidden id="hiddenCoordY" value="#{dataView.coordY}"/>
+                            <h:inputHidden id="hiddenZoom" value="#{dataView.zoom}"/>
+                            <h:inputHidden id="hiddenInBatman" value="#{dataView.inBatman}"/>
+                            <p:commandButton value="submit" oncomplete="confirmDot()"
+                                             update="j_idt20:forCanvas hiddenInBatman "
+                                             styleClass="submit-btn" actionListener="#{dataView.addPoint}"/>
+                            <p:commandButton value="" actionListener="#{dataView.submit}"
+                                             update="j_idt20:mytab j_idt20:forCanvas"
+                                             style=" width: 0px; top: -99999999em;"/>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+            <div class="mainResult">
+                <div class="show-result">
+                    <p:tabView dynamic="true" cache="false" style="padding: 0;" >
+                        <p:tab title="Batman" >
+                            <h:panelGroup layout="block" id="forCanvas">
+                                <canvas id="myCanvas" style="padding: 0;"></canvas>
+                                <script type="text/javascript">
+                                    MyFunction();
+                                    <c:forEach items = "#{dataView.points}" var ="point" >
+                                    drawDots(#{point.x}, #{point.y}, #{point.inBatman});
+                                    </c:forEach>
+                                    console.log("hello");
+                                </script>
+                            </h:panelGroup>
+                            <script type="text/javascript">
+
+                            </script>
+                        </p:tab>
+                        <p:tab title="Table of Results">
+                            <p:dataTable id="mytab" var="point" value="#{dataView.points}">
+
+                                <p:column headerText="X">
+                                    <h:outputText value="#{point.x}"/>
+                                </p:column>
+
+                                <p:column headerText="Y">
+                                    <h:outputText value="#{point.y}"/>
+                                </p:column>
+
+                                <p:column headerText="Zoom">
+                                    <h:outputText value="#{point.zoom}"/>
+                                </p:column>
+
+                                <p:column headerText="Strike">
+                                    <h:outputText value="#{point.inBatman}"/>
+                                </p:column>
+
+                                <p:column headerText="Time">
+                                    <h:outputText value="#{point.currentTime}"/>
+                                </p:column>
+
+                                <p:column headerText="ProgramLiveTime">
+                                    <h:outputText value="#{point.processTime}"/>
+                                </p:column>
+
+                            </p:dataTable>
+                        </p:tab>
+                    </p:tabView>
+
+                </div>
+
+
+        </div>
+        </div>
+    </div>
+    <div id="footer">
+    </div>
+
 </h:body>
 </html>

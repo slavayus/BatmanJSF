@@ -49,16 +49,16 @@ public class AreaCheckServlet extends HttpServlet {
         Point point = checkBatman.updateRequest();
 
         Locale.setDefault(Locale.ENGLISH);
-        try (Session session = HibernateUtil.getSession()) {
-            session.beginTransaction();
-
-            session.save(point);
-
-            session.getTransaction().commit();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw ex;
-        }
+//        try (Session session = HibernateUtil.getSession()) {
+//            session.beginTransaction();
+//
+//            session.save(point);
+//
+//            session.getTransaction().commit();
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//            throw ex;
+//        }
     }
 
     private CheckBatman checkBatman(HttpServletRequest request) {

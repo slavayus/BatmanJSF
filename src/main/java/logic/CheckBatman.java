@@ -1,6 +1,6 @@
 package logic;
 
-import bean.PointBean;
+
 import entity.Point;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,9 +11,9 @@ import static java.lang.Math.sqrt;
 
 public class CheckBatman {
     private final long start;
-    private int getX;
-    private int getY;
-    private int getZoom;
+    private double getX;
+    private double getY;
+    private double getZoom;
 
     public CheckBatman(int getX, int getY, int getZoom) {
         this.start = System.nanoTime();
@@ -41,7 +41,7 @@ public class CheckBatman {
 
 
     private boolean inFirstQuarter() {
-        if (getZoom + 1 < getX && getZoom > getX) {
+        if (getZoom + 1 <= getX && getZoom > getX) {
             double x = getX / getZoom;
             double absX = abs(x);
             double y = 9 - 8 * absX;
@@ -64,14 +64,14 @@ public class CheckBatman {
             return getY <= y * getZoom;
         }
 
-        if (getX < getZoom && getX > 0.5 * getZoom) {
+        if (getX <= getZoom && getX > 0.5 * getZoom) {
             double x = getX / getZoom;
             double absX = abs(x);
             double y = 1.6 * absX + 1.4;
             return y * getZoom >= getY;
         }
 
-        if (getX < 0.5 * getZoom && getX >= 0) {
+        if (getX <= 0.5 * getZoom && getX >= 0) {
             double y = 2.25;
             return y * getZoom >= getY;
         }
@@ -81,16 +81,11 @@ public class CheckBatman {
 
     private boolean inSecondQuarter() {
         if (getX >= -7 * getZoom && getX < -3 * getZoom - 1) {
-            double x = (float) getX / (float) getZoom;
+            double x = getX / getZoom;
             double absX = abs(x);
-            double first = -abs(absX - 1);
-            first *= abs(3 - absX);
-            double second = (absX - 1) * (3 - absX);
-            first /= second;
-            double y = 1.5 * sqrt(first);
-            y *= (1 + abs(absX - 3) / (absX - 3)) * sqrt(1 - (x / 7) * (x / 7));
-            y += (4.5 + 0.75 * (abs(x - 0.5) + abs(x + 0.5)) - 2.75 * (abs(x - 0.75) + abs(x + 0.75)));
-            y *= (1 + abs(1 - absX) / (1 - absX));
+            double y = 1.5 * sqrt((-abs(absX - 1)) * abs(3 - absX) / ((absX - 1) * (3 - absX))) * (1 + abs(absX - 3) /
+                    (absX - 3)) * sqrt(1 - (x / 7) * (x / 7)) + (4.5 + 0.75 * (abs(x - 0.5) + abs(x + 0.5)) - 2.75 *
+                    (abs(x - 0.75) + abs(x + 0.75))) * (1 + abs(1 - absX) / (1 - absX));
             return getY <= y * getZoom;
         }
 
@@ -101,21 +96,21 @@ public class CheckBatman {
             return getY <= y * getZoom;
         }
 
-        if (-1 * getZoom - 1 > getX && -1 * getZoom < getX) {
+        if (-1 * getZoom - 1 >= getX && -1 * getZoom < getX) {
             double x = getX / getZoom;
             double absX = abs(x);
             double y = 9 - 8 * absX;
             return getY <= y * getZoom;
         }
 
-        if (getX > -1 * getZoom && getX < -0.5 * getZoom) {
+        if (getX >= -1 * getZoom && getX < -0.5 * getZoom) {
             double x = getX / getZoom;
             double absX = abs(x);
             double y = 1.6 * absX + 1.4;
             return y * getZoom >= getY;
         }
 
-        if (getX > -0.5 * getZoom && getX <= 0) {
+        if (getX >= -0.5 * getZoom && getX <= 0) {
             double y = 2.25;
             return y * getZoom >= getY;
         }
@@ -132,7 +127,7 @@ public class CheckBatman {
 
         }
 
-        if (getX >= -4 * getZoom && getX < 0) {
+        if (getX >= -4 * getZoom && getX <= 0) {
             double x = getX / getZoom;
             double absX = abs(x);
             double y = abs(x / 2) - 0.0913722 * x * x - 3 + sqrt(1 - (abs(absX - 2) - 1) * (abs(absX - 2) - 1));
